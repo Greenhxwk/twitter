@@ -1,6 +1,6 @@
 <?php
 //Connect to DB
-	$dsn = 'mysql:host=localhost; dbname=tweety';  
+	$dsn = 'mysql:host=localhost; dbname=twitter';  
 	$user = 'root';
 	$pass = '';
 

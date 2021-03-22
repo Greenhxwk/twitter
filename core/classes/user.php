@@ -17,7 +17,7 @@ class User {
 
 	public function login($email, $password){
 		$passwordHash = md5($password);
-		$stmt = $this->pdo->prepare("SELECT 'user_id' FROM 'users' WHERE 'email' = :email AND 'password' = :password");
+		$stmt = $this->pdo->prepare("SELECT `user_id` FROM `users` WHERE `email` = :email AND `password` = :password");
 		$stmt->bindParam(':email', $email, PDO::PARAM_STR);
 		$stmt->bindParam(':password', $passwordHash, PDO::PARAM_STR);
 		$stmt->execute();
