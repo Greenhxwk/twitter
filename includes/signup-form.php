@@ -1,5 +1,35 @@
 <?php
+	if(isset($_POST['signup'])){
+		$screenName = $_POST['screenName'];
+		$password   = $_POST['password'];
+		$email      = $_POST['email'];
+		$error      ='';
+	
 
+	if(empty($screenName) or empty($password) or empty($email)) {
+		$error = 'All fields are required';
+	} else {
+		$email = $getFromU->checkInput($email);
+		$password = $getFromU->checkInput($password);
+		$screenName = $getFromU->checkInput($screenName);
+
+		if (!filter_var($email)) {
+			$error = 'Invalid email format';
+		} else if(strlen($screenName) > 20) {
+			$error = 'Name must be between 6-30 characters';
+		} else if(strlen($password) < 5) {
+			$error = 'Password to short.';
+		} else {
+			if ($getFromU->checkEmail($email) === true) {
+				$error = 'Email is already in use';
+			} else {
+				$user_id = $getFromU->create('users', array('email' => $email, 'password' => md5($password), 'screenName'=> $screenName, 'profileImage' => 'assets/images/defaultProfileImage.png', 'profileCover' => 'assets/images/defaultCoverImage.png'  ));
+				$_SESSION['user_id'] = $user_id;
+				header('Location: includes/signup.php?step=1');
+			}
+		}
+	}
+}
 ?>
 
 <form method="post">
@@ -17,5 +47,17 @@
 		</li>
 		<li>
 			<input type="submit" name="signup" Value="Signup for Twitter">
+		</li>
+
+		<?php
+			if(isset($error)) {
+				echo '<li class="error-li">  
+			<div class = "span-fp-error">'.$error.' </div> </li>';
+			}
+
+		?>
+
+		<li class="error-li">  
+			<div class = "span-fp-error"> </div>
 		</li>
 	</ul>
